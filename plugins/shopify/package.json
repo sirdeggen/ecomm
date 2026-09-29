@@ -1,0 +1,20 @@
+{
+  "name": "@ecomm/plugin-shopify",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "tsx --test test/shopify.test.ts",
+    "seed": "tsx src/seed.ts"
+  },
+  "dependencies": {
+    "@ecomm/catalog": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "tsx": "^4.20.5"
+  }
+}

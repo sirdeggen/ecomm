@@ -1,0 +1,21 @@
+{
+  "name": "@ecomm/payment-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/cli.ts",
+    "test": "tsx --test test/server.test.ts"
+  },
+  "dependencies": {
+    "@bsv/sdk": "2.8.10",
+    "@bsv/wallet-toolbox": "2.14.3",
+    "@ecomm/bsv-core": "0.1.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "@types/qrcode": "^1.5.5",
+    "tsx": "^4.20.5"
+  }
+}

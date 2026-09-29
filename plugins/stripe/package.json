@@ -1,0 +1,19 @@
+{
+  "name": "@ecomm/plugin-stripe",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "tsx --test test/record.test.ts"
+  },
+  "dependencies": {
+    "stripe": "^22.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "tsx": "^4.20.5"
+  }
+}

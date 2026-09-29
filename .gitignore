@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.next/
+data/
+.env
+!.env.example
+*.log
+coverage/
+demos/woocommerce/wp/
+.DS_Store
+playwright-report/
+test-results/
+*.tsbuildinfo

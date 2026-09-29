@@ -1,0 +1,58 @@
+services:
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_ROOT_PASSWORD: rootpass
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  wordpress:
+    image: wordpress:6.8-php8.3-apache
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: host.docker.internal
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      BSV_PAY_SERVER_URL: http://host.docker.internal:4000
+      BSV_PAY_PUBLIC_URL: http://127.0.0.1:4000
+      WEBHOOK_SECRET: dev-webhook-secret
+      BSV_NETWORK: testnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - wp:/var/www/html
+      - ../../plugins/woocommerce/bsv-pay:/var/www/html/wp-content/plugins/bsv-pay
+      - ./theme/bsv-hats:/var/www/html/wp-content/themes/bsv-hats
+    depends_on:
+      db:
+        condition: service_healthy
+  wpcli:
+    image: wordpress:cli-php8.3
+    user: "33:33"
+    environment:
+      WORDPRESS_DB_HOST: host.docker.internal
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      BSV_PAY_SERVER_URL: http://host.docker.internal:4000
+      WEBHOOK_SECRET: dev-webhook-secret
+      BSV_NETWORK: testnet
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - wp:/var/www/html
+      - ../../plugins/woocommerce/bsv-pay:/var/www/html/wp-content/plugins/bsv-pay
+      - ./theme/bsv-hats:/var/www/html/wp-content/themes/bsv-hats
+    depends_on:
+      - wordpress
+volumes:
+  wp:

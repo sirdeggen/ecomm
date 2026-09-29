@@ -1,0 +1,22 @@
+api_version = "2025-07"
+
+[[extensions]]
+name = "Pay with BSV"
+handle = "bsv-pay"
+type = "ui_extension"
+
+  [[extensions.targeting]]
+  module = "./src/ThankYou.jsx"
+  target = "purchase.thank-you.block.render"
+
+  [[extensions.targeting]]
+  module = "./src/OrderStatus.jsx"
+  target = "customer-account.order-status.block.render"
+
+  [extensions.settings]
+
+    [[extensions.settings.fields]]
+    key = "server_url"
+    type = "single_line_text_field"
+    name = "Payment server URL"
+    description = "Public URL of the BSV payment server, for example https://pay.example.com"

@@ -1,0 +1,20 @@
+{
+  "name": "@ecomm/plugin-medusa",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./flow": "./src/flow.ts"
+  },
+  "scripts": {
+    "test": "tsx --test test/flow.test.ts"
+  },
+  "dependencies": {
+    "@medusajs/framework": "^2.17.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "tsx": "^4.20.5"
+  }
+}

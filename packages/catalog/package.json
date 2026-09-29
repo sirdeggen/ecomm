@@ -1,0 +1,9 @@
+{
+  "name": "@ecomm/catalog",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/hats.ts"
+  }
+}
