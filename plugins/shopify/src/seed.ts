@@ -1,5 +1,6 @@
 import { HATS } from "@ecomm/catalog";
 import { markShopifyOrderPaid } from "./index.js";
+import { shopifySessionFromEnv } from "./token.js";
 
 const CREATE = `mutation productCreate($product: ProductCreateInput!) {
   productCreate(product: $product) {
@@ -9,16 +10,12 @@ const CREATE = `mutation productCreate($product: ProductCreateInput!) {
 }`;
 
 async function main() {
-  const shop = required("SHOPIFY_SHOP");
-  const accessToken = required("SHOPIFY_ADMIN_TOKEN");
-  const version = process.env.SHOPIFY_API_VERSION || "2025-10";
+  const session = shopifySessionFromEnv();
+  const version = session.apiVersion || "2025-10";
   for (const hat of HATS) {
-    const response = await fetch(`https://${shop}/admin/api/${version}/graphql.json`, {
+    const response = await session.authorizedFetch(`https://${session.shop}/admin/api/${version}/graphql.json`, {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-shopify-access-token": accessToken,
-      },
+      headers: { "content-type": "application/json" },
       body: JSON.stringify({
         query: CREATE,
         variables: {
@@ -35,12 +32,6 @@ async function main() {
     const body = await response.json();
     console.log(hat.name, JSON.stringify(body.data?.productCreate?.product ?? body));
   }
-}
-
-function required(name: string): string {
-  const value = process.env[name];
-  if (!value) throw new Error(`${name} is required`);
-  return value;
 }
 
 if (process.argv[1]?.endsWith("seed.ts")) {

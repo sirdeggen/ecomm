@@ -6,17 +6,20 @@ Shopify's checkout does not let an extension insert a new payment method in the 
 2. The checkout UI extension (`extensions/bsv-pay`) renders on the Thank you page (`purchase.thank-you.block.render`) and the Order status page (`customer-account.order-status.block.render`). Thank you runs before some order fields settle; the order id is what you key on. See [Thank you and Order status](https://shopify.dev/docs/apps/build/checkout/thank-you-order-status).
 3. The extension cannot mutate the order. `src/receiver.ts` accepts the payment-server webhook and calls [`orderMarkAsPaid`](https://shopify.dev/docs/api/admin-graphql/latest/mutations/orderMarkAsPaid). That mutation needs `write_orders` and the staff permission to mark orders as paid.
 
-One custom app is installed on one store. Create the app in the Partner Dashboard, put the client id in `shopify.app.toml`, then `shopify app dev` from this directory once the Shopify CLI and a Partner account exist.
+One app is installed on one store. Create it in the [Dev Dashboard](https://shopify.dev/docs/apps/build/dev-dashboard/create-apps-using-dev-dashboard), put the client id in `shopify.app.toml`, then `shopify app dev` from this directory once the Shopify CLI and a Dev Dashboard account exist.
 
-This was not deployed here. There is no Partner account in the environment.
+Dev Dashboard apps mint an Admin API access token with the [client-credentials grant](https://shopify.dev/docs/apps/build/authentication-authorization/client-credentials-grant). `src/token.ts` posts form-encoded `grant_type=client_credentials`, `client_id` (`SHOPIFY_API_KEY`), and `client_secret` (`SHOPIFY_API_SECRET`) to `https://{SHOPIFY_SHOP}/admin/oauth/access_token`. Shopify answers `{ access_token, scope, expires_in }` and `expires_in` is 86399 seconds (24 hours). There is no refresh token. The receiver (`src/receiver.ts`) and the seed script share that helper. It keeps the token in memory and requests a new one one minute before expiry. When an Admin API call answers 401, it requests a new token and retries that call once. Each process has its own cache. `SHOPIFY_ADMIN_TOKEN`, when you already have a static token, is sent as-is for the life of the process.
+
+This was not deployed here. There is no Dev Dashboard account in the environment.
 
 ## Variables
 
 | Variable | Who creates it |
 | --- | --- |
 | `SHOPIFY_SHOP` | The dev store's `*.myshopify.com` host |
-| `SHOPIFY_ADMIN_TOKEN` | Custom app Admin API token, after install |
-| `SHOPIFY_API_KEY` / `SHOPIFY_API_SECRET` | Partner Dashboard app credentials |
+| `SHOPIFY_API_KEY` | Dev Dashboard client id. With the client secret, this mints the Admin API token |
+| `SHOPIFY_API_SECRET` | Dev Dashboard client secret |
+| `SHOPIFY_ADMIN_TOKEN` | Optional static Admin API token. The helper uses this value directly |
 | `SHOPIFY_API_VERSION` | Defaults to `2025-10` |
 | `SHOPIFY_WEBHOOK_URL` | URL of `src/receiver.ts` |
 | `SHOPIFY_RECEIVER_PORT` | Default `4100` |
@@ -24,7 +27,7 @@ This was not deployed here. There is no Partner account in the environment.
 | `PAYMENT_SERVER_URL` | Payment server |
 | `BSV_NETWORK` | `testnet` |
 
-Seed hats after the token exists:
+Seed hats after the shop and app credentials exist:
 
 ```bash
 npm run seed -w @ecomm/plugin-shopify

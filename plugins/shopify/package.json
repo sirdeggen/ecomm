@@ -7,7 +7,7 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "test": "tsx --test test/shopify.test.ts",
+    "test": "tsx --test test/shopify.test.ts test/token.test.ts",
     "seed": "tsx src/seed.ts"
   },
   "dependencies": {
