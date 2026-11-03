@@ -1,0 +1,9 @@
+name = "BSV Pay"
+embedded = true
+# Replace after you create the app in the Partner Dashboard. One app is installed on one store.
+
+[access_scopes]
+scopes = "write_orders,read_orders,write_products,read_products"
+
+[auth]
+redirect_urls = [ "https://localhost:4000/shopify/callback" ]

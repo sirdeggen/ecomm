@@ -1,0 +1,147 @@
+/*
+Theme Name: BSV Hats
+Theme URI: https://github.com/sirdeggen/ecomm
+Description: Classic storefront for the BSV Hats WooCommerce demo.
+Version: 0.1.0
+Requires at least: 6.7
+Text Domain: bsv-hats
+*/
+
+:root {
+  --ink: #172033;
+  --navy: #10203a;
+  --gold: #c8922a;
+  --cream: #f3ecdf;
+  --paper: #f7f3eb;
+  --card: #fffdf8;
+  --line: #e3d7c4;
+  --muted: #5d6b7c;
+}
+
+* { box-sizing: border-box; }
+body.bsv-hats {
+  margin: 0;
+  background:
+    radial-gradient(1200px 400px at 10% -10%, #fff 0%, transparent 50%),
+    var(--paper);
+  color: var(--ink);
+  font-family: "Source Sans 3", sans-serif;
+}
+a { color: inherit; }
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 6vw;
+  background: var(--navy);
+  color: var(--cream);
+}
+.wordmark {
+  font-family: Fraunces, serif;
+  font-size: 1.7rem;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  margin: 0;
+}
+.wordmark span { color: var(--gold); }
+.platform-pill {
+  border: 1px solid rgba(243, 236, 223, 0.35);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.85rem;
+}
+.cart-link {
+  background: var(--gold);
+  color: var(--navy);
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+}
+.shop-main { padding: 1.5rem 6vw 4rem; max-width: 1180px; margin: 0 auto; }
+.lede { max-width: 40rem; color: var(--muted); font-size: 1.05rem; }
+.site-footer { padding: 1.2rem 6vw 2rem; color: var(--muted); font-size: 0.9rem; }
+
+ul.products {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 1.4rem 0 0;
+}
+ul.products li.product {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 0.9rem;
+  float: none !important;
+  width: auto !important;
+  margin: 0 !important;
+}
+ul.products li.product h2,
+.woocommerce-loop-product__title,
+.entry-title,
+.bsv-pay__head h2 {
+  font-family: Fraunces, serif;
+  font-weight: 560;
+}
+.woocommerce-loop-product__title { font-size: 1.25rem; }
+.price { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--ink); }
+.button, button, input[type="submit"], #place_order {
+  background: var(--navy) !important;
+  color: white !important;
+  border-radius: 999px !important;
+  font-family: inherit;
+}
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea,
+.woocommerce form .form-row select {
+  font: inherit;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  padding: 0.55rem 0.7rem;
+}
+.woocommerce-checkout, .woocommerce-cart, .woocommerce-order {
+  background: transparent;
+}
+
+.bsv-pay__panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 1rem 1.1rem;
+  margin-top: 1.2rem;
+}
+.bsv-pay__kicker { letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.75rem; color: var(--muted); margin: 0; }
+.bsv-pay__head h2 { margin: 0.2rem 0; }
+.bsv-pay__wallet, .bsv-pay__copy {
+  background: var(--gold) !important;
+  color: var(--navy) !important;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.bsv-pay__hint, .bsv-pay__expiry { color: var(--muted); font-size: 0.92rem; }
+.bsv-pay__fallback { margin-top: 1rem; padding-top: 0.6rem; border-top: 1px solid var(--line); }
+.bsv-pay__addr { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.85rem; }
+.bsv-pay__addr input { font: inherit; padding: 0.55rem 0.7rem; border-radius: 10px; border: 1px solid var(--line); }
+.bsv-pay__sim {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  margin-top: 1rem;
+  padding: 0.7rem;
+  border: 1px dashed #b45309;
+  border-radius: 12px;
+  background: #fff7ed;
+  font-size: 0.92rem;
+}
+.bsv-pay__status { min-height: 1.4rem; font-weight: 650; }
+@media (max-width: 800px) {
+  .site-header { flex-wrap: wrap; }
+}

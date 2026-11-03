@@ -1,0 +1,29 @@
+{
+  "name": "ecomm",
+  "private": true,
+  "version": "0.1.0",
+  "description": "BSV testnet payment plugins and BSV Hats demos for WooCommerce, Shopify, Stripe, Medusa, and BigCommerce.",
+  "workspaces": [
+    "packages/*",
+    "plugins/stripe",
+    "plugins/shopify",
+    "plugins/medusa",
+    "plugins/bigcommerce",
+    "demos/stripe",
+    "demos/medusa",
+    "demos/shopify",
+    "demos/bigcommerce"
+  ],
+  "scripts": {
+    "test": "npm test -w @ecomm/bsv-core && npm test -w @ecomm/payment-server && npm test -w @ecomm/plugin-medusa && npm test -w @ecomm/plugin-stripe && npm test -w @ecomm/plugin-shopify && npm test -w @ecomm/plugin-bigcommerce",
+    "start:server": "npm run start -w @ecomm/payment-server",
+    "build:checkout": "npm run build -w @ecomm/checkout-ui",
+    "dev:stripe": "npm run dev -w @ecomm/demo-stripe",
+    "dev:medusa": "npm run dev -w @ecomm/demo-medusa",
+    "dev:shopify": "npm run dev -w @ecomm/demo-shopify",
+    "dev:bigcommerce": "npm run dev -w @ecomm/demo-bigcommerce"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
