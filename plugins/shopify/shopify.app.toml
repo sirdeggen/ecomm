@@ -1,6 +1,7 @@
 name = "BSV Pay"
 embedded = true
-# Replace after you create the app in the Partner Dashboard. One app is installed on one store.
+# Replace after you create the app in the Dev Dashboard. One app is installed on one store.
+# SHOPIFY_API_KEY is this client id. The receiver mints a 24-hour Admin API token from it.
 
 [access_scopes]
 scopes = "write_orders,read_orders,write_products,read_products"

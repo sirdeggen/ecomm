@@ -1,6 +1,7 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { createServer } from "node:http";
 import { markShopifyOrderPaid, orderGid } from "./index.js";
+import { ShopifyCredentialsError, shopifySessionFromEnv } from "./token.js";
 
 const secret = process.env.WEBHOOK_SECRET || "";
 const port = Number(process.env.SHOPIFY_RECEIVER_PORT || 4100);
@@ -29,15 +30,30 @@ createServer(async (req, res) => {
     res.end("ignored");
     return;
   }
-  if (!process.env.SHOPIFY_SHOP || !process.env.SHOPIFY_ADMIN_TOKEN) {
-    res.writeHead(501);
-    res.end("shop credentials missing");
+  try {
+    const session = shopifySessionFromEnv();
+    await markShopifyOrderPaid(
+      {
+        shop: session.shop,
+        accessToken: await session.getAccessToken(),
+        apiVersion: session.apiVersion,
+        refreshAccessToken: session.refreshable
+          ? () => session.getAccessToken({ forceRefresh: true })
+          : undefined,
+      },
+      orderGid(orderId),
+    );
+  } catch (error) {
+    if (error instanceof ShopifyCredentialsError) {
+      res.writeHead(501);
+      res.end("shop credentials missing");
+      return;
+    }
+    const message = error instanceof Error ? error.message : "shopify request failed";
+    res.writeHead(502);
+    res.end(message.slice(0, 300));
     return;
   }
-  await markShopifyOrderPaid(
-    { shop: process.env.SHOPIFY_SHOP, accessToken: process.env.SHOPIFY_ADMIN_TOKEN },
-    orderGid(orderId),
-  );
   res.writeHead(200);
   res.end("ok");
 }).listen(port, () => {
